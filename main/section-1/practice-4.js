@@ -1,21 +1,13 @@
 'use strict';
 
-function includes(collection, ch) {
-    for (let item of collection) {
-        if (item === ch) {
-            return true;
-        }
-    }
-
-    return false;
-}
 
 module.exports = function collectSameElements(collectionA, objectB) {
-    let result = [];
-    for (let item of collectionA) {
-        if (includes(objectB.value, item.key)) {
-            result.push(item.key);
-        }
-    }
-    return result;
+    let arr = collectionA.map(e => e.key).concat(objectB.value);
+    let newArr = arr.reduce((a, b) => {
+        return a.concat(b);
+    },[]);
+
+    return newArr.filter((e, index) => {
+        return newArr.lastIndexOf(e) !== index;
+    });
 }

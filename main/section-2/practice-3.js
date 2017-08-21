@@ -14,13 +14,14 @@ module.exports = function countSameElements(collection) {
             }
         } else {
             obj.name = a;
-            obj.summary = collection.filter(b => a === b).length;
+            obj.summary = 1;
         }
 
         if (!result.some(e => e.name === obj.name)) {
             result.push(obj);
         } else {
-            result.summary += obj.summary;
+            let repeat = result.find(e => e.name === obj.name);
+            repeat.summary += obj.summary;
         }
     });
 

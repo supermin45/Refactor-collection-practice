@@ -17,5 +17,6 @@ module.exports = function countSameElements(collection) {
             result.push(obj);
         }
     });
+
     return result;
 }

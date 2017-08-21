@@ -1,77 +1,33 @@
 'use strict';
 
-function find(collection, ch) {
-    for (let item of collection) {
-        if (item.key === ch) {
-            return item;
-        }
-    }
-
-    return null;
-}
-
-function summarize(collection) {
-    let result = [];
-    for (let item of collection) {
-        let obj = find(result, item)
-        if (obj) {
-            obj.count++;
-        } else {
-            result.push({key: item, count: 1});
-        }
-    }
-    return result;
-}
-
-function split(item) {
-    let array = item.split("-");
-    return {key: array[0], count: parseInt(array[1], 10)};
-}
-
-function push(result, key, count) {
-    for (var i = 0; i < count; i++) {
-        result.push(key);
-    }
-}
-
-function expand(collection) {
-    let result = [];
-    for (let item of collection) {
-        if (item.length === 1) {
-            result.push(item);
-        } else {
-            let {key, count} = split(item);
-            push(result, key, count);
-        }
-    }
-    return result;
-}
-
-function includes(collection, ch) {
-    for (let item of collection) {
-        if (item === ch) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-function discount(collection, promotionItems) {
-    let result = [];
-    for (let item of collection) {
-        let key = item.key;
-        let count = item.count;
-        if (includes(promotionItems, key)) {
-            count = count - Math.floor(count / 3);
-        }
-        result.push({key, count});
-    }
-    return result;
-}
-
 module.exports = function createUpdatedCollection(collectionA, objectB) {
-    let expandedArray = expand(collectionA);
-    let summarizedArray = summarize(expandedArray);
-    return discount(summarizedArray, objectB.value);
+    let result = countSameElements(collectionA);
+    let arr = objectB.value;
+
+    for (let item of result) {
+        if (arr.includes(item.key) && item.count >= 3) {
+            item.count -= Math.floor(item.count / 3);
+        }
+    }
+
+    return result;
+}
+function countSameElements(collectionA) {
+    let countArr = [];
+
+    collectionA.forEach(a => {
+        let obj = {key: '', count: 0};
+        if (a.split('').includes("-")) {
+            obj.key = a.split('')[0];
+            obj.count = parseInt(a.split('')[2]);
+        } else {
+            obj.key = a;
+            obj.count = collectionA.filter(b => a === b).length;
+        }
+        if (!countArr.some(e => e.key === obj.key)) {
+            countArr.push(obj);
+        }
+    });
+
+    return countArr;
 }

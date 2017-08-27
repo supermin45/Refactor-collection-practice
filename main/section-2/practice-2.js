@@ -4,7 +4,7 @@ module.exports = function countSameElements(collection) {
     let result = [];
 
     collection.forEach(a => {
-        let obj = {key: '', count: 0};
+        let obj = {};
 
         if (a.split('').includes("-")) {
             obj.key = a.split('')[0];

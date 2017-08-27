@@ -16,9 +16,7 @@ function countSameElements(collectionA) {
     let countArr = [];
 
     collectionA.forEach(a => {
-        let obj = {key: '', count: 0};
-        obj.key = a;
-        obj.count = collectionA.filter(b => a === b).length;
+        let obj = {key: a, count: collectionA.filter(b => a === b).length};
         if (!countArr.some(e => e.key === obj.key)) {
             countArr.push(obj);
         }
